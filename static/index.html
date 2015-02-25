@@ -40,6 +40,8 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
                 if (xhr.status==200) {
                     //XXX: parse some JSON from the request!
                     //XXX: Pass the data to the callback!
+                    var json=JSON.parse(xhr.responseText);
+                    callback(json);
                 }
             } 
             catch(e) {
@@ -47,9 +49,13 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
             }
         }
     };
+
     //XXX: POST to a URL
     //XXX: set the mimetype and the accept headers!
     // Remember to use application/json !
+    xhr.open("POST",url,true)
+    xhr.setRequestHeader("Accept","application/json")
+    
 }
 
 
@@ -262,6 +268,7 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
+    var xhr = new XMLHttpRequest();
     drawFrame();
 }
 
