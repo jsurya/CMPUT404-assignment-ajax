@@ -12,4 +12,6 @@ Contributors / Licensing
 
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
 
+Contributors to CMPUT410 Assignment 4 Winter 2015: Paul Nhan, Jessica Surya
+
 
