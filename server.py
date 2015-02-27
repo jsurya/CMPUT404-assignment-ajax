@@ -55,7 +55,7 @@ class World:
         return self.space
 
 # you can test your webservice from the commandline
-# curl -v   -H "Content-Type: appication/json" -X PUT http://127.0.0.1:5000/entity/X -d '{"x":1,"y":1}' 
+# curl -v   -H "Content-Type: application/json" -X PUT http://127.0.0.1:5000/entity/X -d '{"x":1,"y":1}' 
 
 myWorld = World()          
 
@@ -79,20 +79,24 @@ def hello():
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
     '''update the entities via this interface'''
+    print entity
+    # Get the json 
+    obj = flask_post_json()
+    # call myWorld.update on the entity, key, value
+    for key, value in obj.items():
+        print "entity = " + entity + ": key = " + str(key) + " , value = " + str(value)
+        if myWorld.get(entity) == None:
+            myWorld.set(entity, obj)
+        else:
+            myWorld.update(entity,key,value)
 
-    #Get the json and then call myWorld.update on the entity, key, value
-    jsonData= flask_post_json()
-    for key, value in jsonData.items():
-        myWorld.update(entity,key,value)
-
-    #Return the updated entity?
-    #return json.dumps(myWorld.get(entity))
+    # Return the updated entity
     return get_entity(entity)
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
     '''you should probably return the world here'''
-    #Return the world in json?
+    # Return the world in json?
     return json.dumps(myWorld.world())
 
 @app.route("/entity/<entity>")    
