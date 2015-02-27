@@ -55,11 +55,10 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     // Remember to use application/json !
 
     xhr.open("POST",url,true)
-
     //Set mime type and accept headers
     xhr.setRequestHeader("Content-Type","application/json")
     xhr.setRequestHeader("Content-Length", objects.length)
-    xhr.setRequestHeader("Accept", "*/*")
+    xhr.setRequestHeader("Accept", "application/json")
 
     //Convert the objects to JSON and post it
     var jsonStuff= JSON.stringify(objects)

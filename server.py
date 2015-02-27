@@ -86,7 +86,8 @@ def update(entity):
         myWorld.update(entity,key,value)
 
     #Return the updated entity?
-    return json.dumps(myWorld.get(entity))
+    #return json.dumps(myWorld.get(entity))
+    return get_entity(entity)
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
@@ -97,7 +98,7 @@ def world():
 @app.route("/entity/<entity>")    
 def get_entity(entity):
     '''This is the GET version of the entity interface, return a representation of the entity'''
-    return None
+    return json.dumps(myWorld.get(entity))
 
 @app.route("/clear", methods=['POST','GET'])
 def clear():
