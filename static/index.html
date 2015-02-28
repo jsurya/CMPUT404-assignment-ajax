@@ -53,7 +53,6 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     //XXX: POST to a URL
     //XXX: set the mimetype and the accept headers!
     // Remember to use application/json !
-
     xhr.open("POST",url,true)
     //Set mime type and accept headers
     xhr.setRequestHeader("Content-Type","application/json")
@@ -277,23 +276,23 @@ function update() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState==4) {
-            try {
+            try 
+            {
                 if (xhr.status==200) {
-                    //XXX: parse some JSON from the request!
-                    //XXX: Pass the data to the callback!
                     var json = JSON.parse(xhr.responseText); 
                     refresh(json);
+                    //Signal that the object needs to be drawn
+                    drawNextFrame();
                 }
-            } 
-            catch(e) {
+            }catch(e) {
                 alert('Error: ' + e.name);
             }
         }
     };
     xhr.open("GET", "/world", true);
     xhr.send();
-    
     drawFrame();
+
 }
 
 function refresh(json) {
