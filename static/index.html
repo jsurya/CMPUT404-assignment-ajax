@@ -145,7 +145,6 @@ function getPosition(e) {
 	}
 }
 
-
 function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
@@ -156,8 +155,8 @@ function addEntity(entity, data) {
 
 var counter = 0;
 function addEntityWithoutName(data) {
-    //var name = "X"+Math.floor((Math.random()*100)+1);
-    var name = "X"+(counter++)%100;
+    var name = "X"+Math.floor((Math.random()*100)+1);
+    //var name = "X"+(counter++)%100;
     addEntity(name,data);
 }
 
@@ -276,15 +275,14 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
     var xhr = new XMLHttpRequest();
-    var json;
     xhr.onreadystatechange = function () {
         if (xhr.readyState==4) {
             try {
                 if (xhr.status==200) {
                     //XXX: parse some JSON from the request!
                     //XXX: Pass the data to the callback!
-                    var json = JSON.parse(xhr.responseText);
-                    
+                    var json = JSON.parse(xhr.responseText); 
+                    refresh(json);
                 }
             } 
             catch(e) {
@@ -294,19 +292,18 @@ function update() {
     };
     xhr.open("GET", "/world", true);
     xhr.send();
-    var worldState = json;
-    for (entity in worldState) {
-        console.log(entity);
-        // world[entity] = worldState[entity];
-    }
-
+    
     drawFrame();
 }
 
+function refresh(json) {
+    for (entity in json) {
+        console.log(entity);
+        world[entity] = json[entity];
+    }
+}
 // 30 frames per second
 setInterval( update, 1000/30.0);
-
-
 
     </script>
 </body>
