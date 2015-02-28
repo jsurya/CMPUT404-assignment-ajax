@@ -40,12 +40,12 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
                 if (xhr.status==200) {
                     //XXX: parse some JSON from the request!
                     //XXX: Pass the data to the callback!
-                    var json=JSON.parse(xhr.responseText);
+                    var json = JSON.parse(xhr.responseText);
                     callback(json);
                 }
             } 
             catch(e) {
-                alert('Error: ' + e.name);
+                alert('Error: ' + e.name + ' for ' + url);
             }
         }
     };
@@ -61,9 +61,7 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     xhr.setRequestHeader("Accept", "application/json")
 
     //Convert the objects to JSON and post it
-    var jsonStuff= JSON.stringify(objects)
-    xhr.send(objects)
-    
+     xhr.send(JSON.stringify(objects))
 }
 
 
@@ -152,7 +150,7 @@ function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
     //XXX: Send a XHTML Request that updates the entity you just  modified!
-    var xhr = new XMLHttpRequest();
+    sendJSONXMLHTTPRequest("/entity/" + entity, world[entity], update);
 
 }
 
@@ -201,7 +199,7 @@ mouse = (function() {
                 var y = pos[1];
 	        self.clicked = 1;
                 self.callListeners(self.mousedowners,x,y,self.clicked,e);
-                //addEntityWithoutName({'x':x,'y':y,'colour':'red'});
+                addEntityWithoutName({'x':x,'y':y,'colour':'red'});
             }
         },
         mouseup: function(e) {
@@ -215,7 +213,7 @@ mouse = (function() {
 	        self.clicked = 0;
                 self.selected = -1;
                 self.callListeners(self.mouseuppers,x,y,self.clicked,e);
-                //addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
+                addEntityWithoutName({'x':x,'y':y,'colour':'blue'});
             }
         },
         touchstart: function(e) {
@@ -278,6 +276,30 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
     var xhr = new XMLHttpRequest();
+    var json;
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState==4) {
+            try {
+                if (xhr.status==200) {
+                    //XXX: parse some JSON from the request!
+                    //XXX: Pass the data to the callback!
+                    var json = JSON.parse(xhr.responseText);
+                    
+                }
+            } 
+            catch(e) {
+                alert('Error: ' + e.name);
+            }
+        }
+    };
+    xhr.open("GET", "/world", true);
+    xhr.send();
+    var worldState = json;
+    for (entity in worldState) {
+        console.log(entity);
+        // world[entity] = worldState[entity];
+    }
+
     drawFrame();
 }
 
