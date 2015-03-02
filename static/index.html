@@ -296,12 +296,6 @@ function update() {
 
 }
 
-function refresh(json) {
-    for (entity in json) {
-        console.log(entity);
-        world[entity] = json[entity];
-    }
-}
 // 30 frames per second
 setInterval( update, 1000/30.0);
 
